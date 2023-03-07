@@ -1,6 +1,6 @@
 <?php
 
-namespace DayKoala\entity\traits;
+namespace DayKoala\utils\traits;
 
 trait StackableTrait{
 
@@ -12,7 +12,7 @@ trait StackableTrait{
     }
 
     public function setMaxStackSize(Int $stack) : Void{
-        $this->maxStack = $stack;
+        $this->maxStack = $stack < 1 ? 1 : $stack;
     }
 
     public function getStackSize() : Int{
@@ -20,9 +20,10 @@ trait StackableTrait{
     }
 
     public function setStackSize(Int $stack) : Void{
-        if($this->getMaxStackSize() < $stack) $stack = $this->getMaxStackSize();
-        
-        $this->stack = $stack < 0 ? 0 : $stack;
+        if($stack > $this->maxStack){
+           $stack = $this->maxStack;
+        }
+        $this->stack = $stack < 1 ? 1 : $stack;
     }
 
     public function addStackSize(Int $stack) : Void{

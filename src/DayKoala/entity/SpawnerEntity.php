@@ -14,11 +14,8 @@ use pocketmine\nbt\tag\CompoundTag;
 
 use pocketmine\data\bedrock\LegacyEntityIdToStringIdMap;
 
-use pocketmine\item\VanillaItems;
-
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\event\entity\EntityDeathEvent;
 
 use pocketmine\player\Player;
 
@@ -27,9 +24,11 @@ use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\types\entity\Attribute as NetworkAttribute;
 use pocketmine\network\mcpe\protocol\types\entity\PropertySyncData;
 
-use DayKoala\entity\traits\StackableTrait;
+use DayKoala\utils\traits\StackableTrait;
 
 use DayKoala\utils\SpawnerNames;
+
+use DayKoala\SakuraSpawners;
 
 class SpawnerEntity extends Living{
 
@@ -40,11 +39,13 @@ class SpawnerEntity extends Living{
     protected string $networkTypeId;
     protected int $legacyNetworkTypeId;
 
+    protected string $display;
+
     public function __construct(Location $location, ?CompoundTag $nbt = null){
-        $this->legacyNetworkTypeId = LegacyEntityIdToStringIdMap::getInstance()->stringToLegacy($this->networkTypeId = $nbt->getString("id", ":")) ?? 0;
+        $this->legacyNetworkTypeId = LegacyEntityIdToStringIdMap::getInstance()->stringToLegacy($this->networkTypeId = $nbt->getString("id", static::getNetworkTypeId())) ?? 0;
+        $this->display = SakuraSpawners::getInstance()->getDefaultEntityName();
         parent::__construct($location, $nbt);
 
-        $this->setNameTagVisible(true);
         $this->setNameTagAlwaysVisible(true);
     }
 
@@ -61,11 +62,26 @@ class SpawnerEntity extends Living{
     }
 
     public function getDrops() : Array{
-        return [];
+        return SakuraSpawners::getInstance()->getSpawnerDrops($this->legacyNetworkTypeId);
     }
 
     public function getXpDropAmount() : Int{
-        return mt_rand(1, 5);
+        return SakuraSpawners::getInstance()->getSpawnerXp($this->legacyNetworkTypeId);
+    }
+
+    protected function getInitialSizeInfo() : EntitySizeInfo{
+        return SakuraSpawners::getInstance()->getSpawnerSize($this->legacyNetworkTypeId);
+    }
+
+    public function getNameTag() : String{
+        $args = [
+            '{health}' => $this->getHealth(),
+            '{max-health}' => $this->getMaxHealth(),
+            '{stack}' => $this->getStackSize(),
+            '{max-stack}' => $this->getMaxStackSize(),
+            '{name}' => $this->getName()
+        ];
+        return str_replace(array_keys($args), array_values($args), $this->display);
     }
 
     public function attack(EntityDamageEvent $source) : Void{
@@ -75,39 +91,38 @@ class SpawnerEntity extends Living{
         if($source instanceof EntityDamageByEntityEvent){
            $source->setKnockBack(0);
         }
-        if($this->getHealth() < $source->getFinalDamage() and $this->getStackSize() > 1){
+        if($source->getFinalDamage() >= $this->getHealth() and $this->stack > 1){
            $source->cancel();
-           
-           $this->reduceStackSize(1);
-           $this->setHealth($this->getMaxHealth());
-
-           $event = new EntityDeathEvent($this, $this->getDrops(), $this->getXpDropAmount());
-           $event->call();
-
-           foreach($event->getDrops() as $item){
-              $this->getWorld()->dropItem($this->location, $item);
-           }
-
-           $this->getWorld()->dropExperience($this->location, $event->getXpDropAmount());
+           $this->onDeath();
         }
         parent::attack($source);
+    }
+
+    protected function onDeath() : Void{
+        if($this->stack > 1){
+           $this->stack--;
+           $this->setHealth($this->getMaxHealth());
+        }
+        parent::onDeath();
+    }
+
+    protected function startDeathAnimation() : Void{
+        if(!$this->isAlive()) parent::startDeathAnimation();
     }
 
     public function onUpdate(Int $currentTick) : Bool{
         if($this->closed){
            return false;
         }
-        parent::onUpdate($currentTick);
-
-        $this->setNameTag(SpawnerNames::getName($this->legacyNetworkTypeId) ." x". $this->getStackSize());
-        return true;
+        $this->setNameTag($this->getNameTag());
+        return parent::onUpdate($currentTick);
     }
-
+    
     protected function sendSpawnPacket(Player $player) : Void{
         $player->getNetworkSession()->sendDataPacket(AddActorPacket::create(
             $this->getId(),
             $this->getId(),
-            $this->networkTypeId,
+            $this->getModifiedNetworkTypeId(),
             $this->location->asVector3(),
             $this->getMotion(),
             $this->location->pitch,
@@ -118,10 +133,6 @@ class SpawnerEntity extends Living{
                 return new NetworkAttribute($attr->getId(), $attr->getMinValue(), $attr->getMaxValue(), $attr->getValue(), $attr->getDefaultValue(), []);
             }, $this->attributeMap->getAll()), $this->getAllNetworkData(), new PropertySyncData([], []), []
         ));
-    }
-
-    protected function getInitialSizeInfo() : EntitySizeInfo{
-        return new EntitySizeInfo(1.5, 1.5);
     }
 
 }

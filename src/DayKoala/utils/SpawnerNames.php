@@ -6,7 +6,7 @@ use pocketmine\utils\Config;
 
 final class SpawnerNames{
 
-    private static $names = [];
+    private static array $names = [];
 
     private static $defaultNames = [
         10 => 'Chicken',
@@ -113,6 +113,10 @@ final class SpawnerNames{
 
     public static function getDefaultName(Int $id) : String{
         return self::$defaultNames[$id] ?? 'Unknown';
+    }
+
+    public static function getNames() : Array{
+        return self::$names ?? self::$defaultNames;
     }
 
     private function __construct(){}

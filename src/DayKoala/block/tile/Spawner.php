@@ -25,8 +25,8 @@ abstract class Spawner extends Spawnable{
 
     protected const TAG_SPAWN_ATTEMPTS = "SpawnAttempts";
 
-    protected const DEFAULT_MIN_SPAWN_DELAY = 10;
-    protected const DEFAULT_MAX_SPAWN_DELAY = 100;
+    protected const DEFAULT_MIN_SPAWN_DELAY = 200;
+    protected const DEFAULT_MAX_SPAWN_DELAY = 400;
 
     protected const DEFAULT_SPAWN_RANGE = 4;
     protected const DEFAULT_REQUIRED_PLAYER_RANGE = 16;
