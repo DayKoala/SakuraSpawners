@@ -96,7 +96,7 @@ final class SakuraSpawners extends PluginBase{
     }
 
     protected function onDisable() : Void{
-        if($this->settings === null){
+        if(empty($this->settings)){
            return;
         }
         $settings = new Config($this->getDataFolder() .'Settings.yml', Config::YAML);
@@ -199,7 +199,7 @@ final class SakuraSpawners extends PluginBase{
     }
 
     private function writeSpawnerSettings() : Void{
-        if($this->settings === null){
+        if(empty($this->settings)){
            return;
         }
         foreach($this->settings as $id => $data){

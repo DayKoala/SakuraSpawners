@@ -87,6 +87,10 @@ class SpawnerEntity extends Living{
         return SakuraSpawners::getInstance()->getSpawnerXp($this->legacyNetworkTypeId);
     }
 
+    public function getSize() : EntitySizeInfo{
+        return SakuraSpawners::getInstance()->getSpawnerSize($this->legacyNetworkTypeId);
+    }
+
     protected function getInitialSizeInfo() : EntitySizeInfo{
         return SakuraSpawners::getInstance()->getSpawnerSize($this->legacyNetworkTypeId);
     }

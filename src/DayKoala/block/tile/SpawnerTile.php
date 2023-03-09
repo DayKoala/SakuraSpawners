@@ -35,7 +35,6 @@ use pocketmine\player\Player;
 use pocketmine\block\BlockLegacyIds;
 
 use pocketmine\entity\EntityDataHelper as Helper;
-use pocketmine\entity\Entity;
 
 use pocketmine\world\particle\MobSpawnParticle;
 
@@ -88,7 +87,7 @@ class SpawnerTile extends Spawner{
         }else $entity->addStackSize(1);
     }
 
-    protected function getNearestSameEntity() : ?Entity{
+    protected function getNearestSameEntity() : ?SpawnerEntity{
         $pos = $this->getPosition();
 
         $minX = ((int) floor($pos->x - $this->spawnRange)) >> Chunk::COORD_BIT_SIZE;
