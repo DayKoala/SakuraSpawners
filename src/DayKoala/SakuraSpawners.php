@@ -1,17 +1,33 @@
 <?php
 
+/*
+ *   _____       __                    _____                                          
+ *  / ___/____ _/ /____  ___________ _/ ___/____  ____ __      ______  ___  __________
+ *  \__ \/ __ `/ //_/ / / / ___/ __ `/\__ \/ __ \/ __ `/ | /| / / __ \/ _ \/ ___/ ___/
+ *  ___/ / /_/ / ,< / /_/ / /  / /_/ /___/ / /_/ / /_/ /| |/ |/ / / / /  __/ /  (__  ) 
+ * /____/\__,_/_/|_|\__,_/_/   \__,_//____/ .___/\__,_/ |__/|__/_/ /_/\___/_/  /____/  
+ *                                        /_/                                           
+ *
+ * This program is free software made for PocketMine-MP,
+ * currently under the GNU Lesser General Public License published by
+ * the Free Software Foundation, use according to the license terms.
+ * 
+ * @author DayKoala
+ * @link https://github.com/DayKoala/SakuraSpawners
+ * 
+ * 
+*/
+
 namespace DayKoala;
 
 use pocketmine\plugin\PluginBase;
-
-use pocketmine\event\Listener;
-use pocketmine\event\server\DataPacketSendEvent;
 
 use pocketmine\entity\EntityFactory;
 use pocketmine\entity\EntityDataHelper as Helper;
 use pocketmine\entity\EntitySizeInfo;
 
 use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat;
 
 use pocketmine\world\World;
 
@@ -26,15 +42,9 @@ use pocketmine\block\BlockBreakInfo;
 use pocketmine\block\BlockToolType;
 
 use pocketmine\item\ToolTier;
+use pocketmine\item\ItemFactory;
+use pocketmine\item\StringToItemParser;
 use pocketmine\item\Item;
-
-use pocketmine\network\mcpe\protocol\InventoryContentPacket;
-use pocketmine\network\mcpe\protocol\InventorySlotPacket;
-
-use pocketmine\network\mcpe\convert\TypeConverter;
-
-use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
-use pocketmine\network\mcpe\protocol\types\inventory\ItemStack;
 
 use DayKoala\utils\SpawnerNames;
 
@@ -46,7 +56,7 @@ use DayKoala\block\SpawnerBlock;
 
 use DayKoala\command\SakuraSpawnersCommand;
 
-final class SakuraSpawners extends PluginBase implements Listener{
+final class SakuraSpawners extends PluginBase{
 
     public const TAG_ENTITY_NAME = 'entity.name';
     public const TAG_SPAWNER_NAME = 'spawner.name';
@@ -74,46 +84,24 @@ final class SakuraSpawners extends PluginBase implements Listener{
 
     protected function onEnable() : Void{
         $this->saveResource('Names.yml');
+        $this->saveResource('Settings.yml');
 
-        SpawnerNames::init($folder = $this->getDataFolder());
+        $this->settings = (new Config($this->getDataFolder() .'Settings.yml', Config::YAML))->getAll();
 
-        $this->settings = (new Config($folder .'Settings.json', Config::JSON))->getAll();
-
-        EntityFactory::getInstance()->register(SpawnerEntity::class, function(World $world, CompoundTag $nbt) : SpawnerEntity{
-            return new SpawnerEntity(Helper::parseLocation($nbt, $world), $nbt);
-        }, ['SpawnerEntity']);
-        TileFactory::getInstance()->register(SpawnerTile::class, ['MobSpawner', 'minecraft:mob_spawner']);
-        BlockFactory::getInstance()->register(new SpawnerBlock(new BlockIdentifier(BlockLegacyIds::MOB_SPAWNER, 0, null, SpawnerTile::class), 'Monster Spawner', new BlockBreakInfo(5.0, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel())), true);
+        $this->writeSpawnerBlock();
+        $this->writeSpawnerItem();
+        $this->writeSpawnerSettings();
 
         $this->getServer()->getCommandMap()->register('SakuraSpawners', new SakuraSpawnersCommand($this));
-        $this->getServer()->getPluginManager()->registerEvents($this, $this);
-
-        $this->writeSpawnerSettings();
     }
 
     protected function onDisable() : Void{
         if($this->settings === null){
            return;
         }
-        $settings = new Config($this->getDataFolder() .'Settings.json', Config::JSON);
+        $settings = new Config($this->getDataFolder() .'Settings.yml', Config::YAML);
         $settings->setAll($this->settings);
         $settings->save();
-    }
-
-    public function onReceive(DataPacketSendEvent $event) : Void{
-        $packets = $event->getPackets();
-        foreach($packets as $packet){
-           if($packet instanceof InventoryContentPacket){
-              foreach($packet->items as $index => $item){
-                 $itemStack = $this->writeSpawnerName($item->getItemStack());
-                 if($itemStack instanceof ItemStack) $packet->items[$index] = new ItemStackWrapper($item->getStackId(), $itemStack);
-              }
-           }
-           if($packet instanceof InventorySlotPacket){
-              $itemStack = $this->writeSpawnerName($packet->item->getItemStack());
-              if($itemStack instanceof ItemStack) $packet->item = new ItemStackWrapper($packet->item->getStackId(), $itemStack);
-           }
-        }
     }
 
     public function getSettings() : Array{
@@ -129,11 +117,7 @@ final class SakuraSpawners extends PluginBase implements Listener{
     }
 
     public function getDefaultSpawnerName() : String{
-        return isset($this->settings[self::TAG_SPAWNER_NAME]) ? $this->settings[self::TAG_ENTITY_NAME] : "{name} Spawner";
-    }
-
-    public function getSpawnerNameFormat(Int $meta) : String{
-        return str_replace("{name}", SpawnerNames::getName($meta), $this->getDefaultSpawnerName());
+        return isset($this->settings[self::TAG_SPAWNER_NAME]) ? $this->settings[self::TAG_SPAWNER_NAME] : "{name} Spawner";
     }
 
     public function setDefaultSpawnerName(String $name) : Void{
@@ -187,13 +171,31 @@ final class SakuraSpawners extends PluginBase implements Listener{
     }
 
     public function getSpawnerSize(Int $id) : EntitySizeInfo{
-        return $this->size[$id] ?? new EntitySizeInfo(1.0, 1.0);
+        return $this->size[$id] ?? new EntitySizeInfo(1.3, 1.3);
     }
 
     public function setSpawnerSize(Int $id, Float $height, Float $width) : Void{
         $this->settings[$id][self::TAG_SPAWNER_HEIGHT] = $height = $height < 0.5 ? 0.5 : $height;
         $this->settings[$id][self::TAG_SPAWNER_WIDTH] = $width = $width < 0.5 ? 0.5 : $width;
         $this->size[$id] = new EntitySizeInfo($height, $width);
+    }
+
+    private function writeSpawnerBlock() : Void{
+        EntityFactory::getInstance()->register(SpawnerEntity::class, function(World $world, CompoundTag $nbt) : SpawnerEntity{
+            return new SpawnerEntity(Helper::parseLocation($nbt, $world), $nbt);
+        }, ['SpawnerEntity']);
+        TileFactory::getInstance()->register(SpawnerTile::class, ['MobSpawner', 'minecraft:mob_spawner']);
+        BlockFactory::getInstance()->register(new SpawnerBlock(new BlockIdentifier(BlockLegacyIds::MONSTER_SPAWNER, 0, null, SpawnerTile::class), 'Monster Spawner', new BlockBreakInfo(5.0, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel())), true);
+    }
+
+    private function writeSpawnerItem() : Void{
+        SpawnerNames::init($this->getDataFolder());
+        foreach(SpawnerNames::getNames() as $meta => $name){
+           $item = ItemFactory::getInstance()->get(BlockLegacyIds::MONSTER_SPAWNER, $meta = intval($meta))->setCustomName(str_replace("{name}", $name, $this->getDefaultSpawnerName()));
+
+           StringToItemParser::getInstance()->override(str_replace(" ", "_", strtolower(TextFormat::clean($name))) ."_spawner", fn() => $item);
+           StringToItemParser::getInstance()->override(BlockLegacyIds::MONSTER_SPAWNER .":". $meta, fn() => $item);
+        }
     }
 
     private function writeSpawnerSettings() : Void{
@@ -206,15 +208,6 @@ final class SakuraSpawners extends PluginBase implements Listener{
            }
            if(isset($data[self::TAG_SPAWNER_HEIGHT], $data[self::TAG_SPAWNER_WIDTH])) $this->size[$id] = new EntitySizeInfo($data[self::TAG_SPAWNER_HEIGHT], $data[self::TAG_SPAWNER_WIDTH]);
         }
-    }
-
-    private function writeSpawnerName(ItemStack $itemStack) : ?ItemStack{
-        $item = TypeConverter::getInstance()->netItemStackToCore($itemStack);
-        if($item->getId() !== BlockLegacyIds::MOB_SPAWNER){
-           return null;
-        }
-        $name = $this->getSpawnerNameFormat($item->getMeta());
-        return $item->getCustomName() !== $name ? TypeConverter::getInstance()->coreItemStackToNet($item->setCustomName($name)) : null;
     }
 
 }

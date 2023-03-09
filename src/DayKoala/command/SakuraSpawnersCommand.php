@@ -1,5 +1,23 @@
 <?php
 
+/*
+ *   _____       __                    _____                                          
+ *  / ___/____ _/ /____  ___________ _/ ___/____  ____ __      ______  ___  __________
+ *  \__ \/ __ `/ //_/ / / / ___/ __ `/\__ \/ __ \/ __ `/ | /| / / __ \/ _ \/ ___/ ___/
+ *  ___/ / /_/ / ,< / /_/ / /  / /_/ /___/ / /_/ / /_/ /| |/ |/ / / / /  __/ /  (__  ) 
+ * /____/\__,_/_/|_|\__,_/_/   \__,_//____/ .___/\__,_/ |__/|__/_/ /_/\___/_/  /____/  
+ *                                        /_/                                           
+ *
+ * This program is free software made for PocketMine-MP,
+ * currently under the GNU Lesser General Public License published by
+ * the Free Software Foundation, use according to the license terms.
+ * 
+ * @author DayKoala
+ * @link https://github.com/DayKoala/SakuraSpawners
+ * 
+ * 
+*/
+
 namespace DayKoala\command;
 
 use pocketmine\command\Command;
@@ -32,6 +50,9 @@ final class SakuraSpawnersCommand extends Command{
 
     public function execute(CommandSender $sender, String $label, Array $args) : Bool{
         if($sender instanceof Player){
+           if(!$this->testPermission($sender)){
+              return false;
+           }
            switch(strtolower(array_shift($args))){
               case 'name':
                  if(!isset($args[0])){
@@ -40,6 +61,7 @@ final class SakuraSpawnersCommand extends Command{
                  }
                  $this->plugin->setDefaultSpawnerName(implode(" ", $args));
                  $sender->sendMessage(self::PREFIX ."Spawner name changed.");
+                 return true;
               case 'ename':
                  if(!isset($args[0])){
                     $sender->sendMessage(self::PREFIX ."Invalid entity name format.");
@@ -54,7 +76,7 @@ final class SakuraSpawnersCommand extends Command{
                     return false;
                  }
                  $drops = $this->plugin->getSpawnerDrops($args[0]);
-                 if($drops === null){
+                 if(empty($drops)){
                     $sender->sendMessage(self::PREFIX ."Invalid entity drops.");
                     return false;
                  }

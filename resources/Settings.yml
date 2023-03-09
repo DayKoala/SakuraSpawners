@@ -1,0 +1,152 @@
+---
+
+spawner.name: "§r§l§d{name} §r§dSpawner"
+entity.name: "§r§l§d{name} §r§dx{stack}"
+
+10:
+  spawner.drops:
+    Item Feather (288:0)x1:
+      id: 288
+    Item Raw Chicken (365:0)x1:
+      id: 365
+  spawner.xp: 2
+11:
+  spawner.drops:
+    Item Leather (334:0)x1:
+      id: 334
+    Item Raw Beef (363:0)x1:
+      id: 363
+  spawner.xp: 2
+12:
+  spawner.drops:
+    Item Raw Porkchop (319:0)x1:
+      id: 319
+  spawner.xp: 2
+13:
+  spawner.drops:
+    Item Raw Mutton (423:0)x1:
+      id: 423
+    Item Wool (35:0)x1:
+      id: 35
+  spawner.xp: 2
+16:
+  spawner.drops:
+    Item Leather (334:0)x1:
+      id: 334
+    Item Raw Beef (363:0)x1:
+      id: 363
+  spawner.xp: 2
+20:
+  spawner.drops:
+    Item Iron Ingot (265:0)x2:
+      id: 265
+      count: 2
+  spawner.xp: 5
+32:
+  spawner.drops:
+    Item Rotten Flesh (367:0)x2:
+      id: 367
+      count: 2
+  spawner.xp: 4
+33:
+  spawner.drops:
+    Item Gunpowder (289:0)x2:
+      id: 289
+      count: 2
+  spawner.xp: 4
+34:
+  spawner.drops:
+    Item Bone (352:0)x2:
+      id: 352
+      count: 2
+  spawner.xp: 4
+35:
+  spawner.drops:
+    Item Spider Eye (375:0)x1:
+      id: 375
+    Item String (287:0)x2:
+      id: 287
+      count: 2
+  spawner.xp: 4
+36:
+  spawner.drops:
+    Item Rotten Flesh (367:0)x2:
+      id: 367
+      count: 2
+    Item Gold Nugget (371:0)x2:
+      id: 371
+      count: 2
+  spawner.xp: 5
+37:
+  spawner.drops:
+    Item Slimeball (341:0)x2:
+      id: 341
+      count: 2
+  spawner.xp: 3
+38:
+  spawner.drops:
+    Item Ender Pearl (368:0)x1:
+      id: 368
+  spawner.xp: 5
+40:
+  spawner.drops:
+    Item Spider Eye (375:0)x1:
+      id: 375
+    Item String (287:0)x2:
+      id: 287
+      count: 2
+  spawner.xp: 4
+42:
+  spawner.drops:
+    Item Magma Cream (378:0)x1:
+      id: 378
+  spawner.xp: 4
+43:
+  spawner.drops:
+    Item Blaze Rod (369:0)x1:
+      id: 369
+  spawner.xp: 5
+44:
+  spawner.drops:
+    Item Rotten Flesh (367:0)x2:
+      id: 367
+      count: 2
+  spawner.xp: 4
+46:
+  spawner.drops:
+    Item Bone (352:0)x2:
+      id: 352
+      count: 2
+  spawner.xp: 4
+47:
+  spawner.drops:
+    Item Rotten Flesh (367:0)x2:
+      id: 367
+      count: 2
+  spawner.xp: 4
+48:
+  spawner.drops:
+    Item Bone (352:0)x2:
+      id: 352
+      count: 2
+    Item Coal (263:0)x2:
+      id: 263
+      count: 2
+  spawner.xp: 5
+52:
+  spawner.drops:
+    Item Nether Star (399:0)x1:
+      id: 399
+  spawner.xp: 10
+114:
+  spawner.drops:
+    Item Emerald (388:0)x1:
+      id: 388
+  spawner.xp: 4
+116:
+  spawner.drops:
+    Item Rotten Flesh (367:0)x2:
+      id: 367
+      count: 2
+  spawner.xp: 4
+...

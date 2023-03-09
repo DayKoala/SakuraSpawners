@@ -1,7 +1,25 @@
 <?php
 
+/*
+ *   _____       __                    _____                                          
+ *  / ___/____ _/ /____  ___________ _/ ___/____  ____ __      ______  ___  __________
+ *  \__ \/ __ `/ //_/ / / / ___/ __ `/\__ \/ __ \/ __ `/ | /| / / __ \/ _ \/ ___/ ___/
+ *  ___/ / /_/ / ,< / /_/ / /  / /_/ /___/ / /_/ / /_/ /| |/ |/ / / / /  __/ /  (__  ) 
+ * /____/\__,_/_/|_|\__,_/_/   \__,_//____/ .___/\__,_/ |__/|__/_/ /_/\___/_/  /____/  
+ *                                        /_/                                           
+ *
+ * This program is free software made for PocketMine-MP,
+ * currently under the GNU Lesser General Public License published by
+ * the Free Software Foundation, use according to the license terms.
+ * 
+ * @author DayKoala
+ * @link https://github.com/DayKoala/SakuraSpawners
+ * 
+ * 
+*/
+
 namespace DayKoala\block\tile;
-;
+
 use pocketmine\world\World;
 use pocketmine\world\format\Chunk;
 
@@ -64,7 +82,7 @@ class SpawnerTile extends Spawner{
               }
               $entity = new SpawnerEntity(Helper::parseLocation($nbt = $this->readEntitySpawnData($pos), $position->getWorld()), $nbt);
               $entity->spawnToAll();
-              $position->getWorld()->addParticle($pos, new MobSpawnParticle((Int) $entity->getSize()->getWidth(), (Int) $entity->getSize()->getHeight()));
+              $position->getWorld()->addParticle($pos, new MobSpawnParticle((int) $entity->getSize()->getWidth(), (int) $entity->getSize()->getHeight()));
               break;
            }
         }else $entity->addStackSize(1);
@@ -89,10 +107,7 @@ class SpawnerTile extends Spawner{
                     continue;
                  }
                  $maxY = (int) floor($pos->y - $entity->getPosition()->y);
-                 if($this->spawnRange < $maxY){
-                    continue;
-                 }
-                 if($this->entityTypeId !== $entity->getModifiedNetworkTypeId()){
+                 if($this->entityTypeId !== $entity->getModifiedNetworkTypeId() or $this->spawnRange < $maxY){
                     continue;
                  }
                  $target = $entity;
