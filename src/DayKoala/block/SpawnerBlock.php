@@ -78,13 +78,8 @@ class SpawnerBlock extends MonsterSpawner{
     }
 
     public function getSilkTouchDrops(Item $item) : Array{
-        $tile = $this->position->getWorld()->getTile($this->position);
-        if($tile instanceof Spawner){
-           $drop = StringToItemParser::getInstance()->parse(BlockLegacyIds::MONSTER_SPAWNER .":". $tile->getLegacyEntityId()) ?? ItemFactory::getInstance()->get(BlockLegacyIds::MONSTER_SPAWNER, $tile->getLegacyEntityId());
-        }else{
-           $drop = StringToItemParser::getInstance()->parse(BlockLegacyIds::MONSTER_SPAWNER .":". $this->legacyEntityId) ?? ItemFactory::getInstance()->get(BlockLegacyIds::MONSTER_SPAWNER, $this->legacyEntityId);
-        }
-        return [$drop];
+        $meta = ($tile = $this->position->getWorld()->getTile($this->position)) instanceof Spawner ? $tile->getLegacyEntityId() : $this->legacyEntityId;
+        return [StringToItemParser::getInstance()->parse(BlockLegacyIds::MONSTER_SPAWNER .":". $meta) ?? ItemFactory::getInstance()->get(BlockLegacyIds::MONSTER_SPAWNER, $meta)];
     }
 
 }
