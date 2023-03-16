@@ -23,6 +23,8 @@ namespace DayKoala\command;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 
+use pocketmine\plugin\PluginOwned;
+
 use pocketmine\player\Player;
 
 use pocketmine\item\ItemIds;
@@ -33,7 +35,7 @@ use DayKoala\entity\SpawnerEntity;
 
 use DayKoala\SakuraSpawners;
 
-final class SakuraSpawnersCommand extends Command{
+final class SakuraSpawnersCommand extends Command implements PluginOwned{
     
     private const PREFIX = "§l§dSPAWNERS §r§d";
 
@@ -46,6 +48,10 @@ final class SakuraSpawnersCommand extends Command{
             '/spawner'
         );
         $this->setPermission('sakuraspawners.command.spawner');
+    }
+
+    public function getOwningPlugin() : SakuraSpawners{
+        return $this->plugin;
     }
 
     public function execute(CommandSender $sender, String $label, Array $args) : Bool{

@@ -79,8 +79,6 @@ abstract class Spawner extends Spawnable{
 
     public function setEntityId(String $id) : Void{
         $this->legacyEntityTypeId = LegacyEntityIdToStringIdMap::getInstance()->stringToLegacy($this->entityTypeId = $id) ?? 0;
-
-        if($id !== ":") $this->clearSpawnCompoundCache();
     }
 
     public function getSpawnDelay() : Int{
