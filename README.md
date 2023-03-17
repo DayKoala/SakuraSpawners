@@ -12,7 +12,7 @@
 
 # Command
 
-- `/spawner`: Main command.
+- `/spawner`: Main command, permission: `sakuraspawners.command.spawner`.
 
 ## SubCommands
 
