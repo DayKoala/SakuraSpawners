@@ -32,8 +32,6 @@ use pocketmine\nbt\tag\FloatTag;
 
 use pocketmine\player\Player;
 
-use pocketmine\block\BlockLegacyIds;
-
 use pocketmine\entity\EntityDataHelper as Helper;
 
 use pocketmine\world\particle\MobSpawnParticle;
@@ -74,8 +72,9 @@ class SpawnerTile extends Spawner{
            for($attempts = 0; $attempts < $this->spawnAttempts; $attempts++){
               $pos = $position->add(mt_rand(-$this->spawnRange, $this->spawnRange), mt_rand(-1, 1), mt_rand(-$this->spawnRange, $this->spawnRange));
               if(
-                 $position->getWorld()->getBlock($pos)->getIdInfo()->getBlockId() !== BlockLegacyIds::AIR or
-                 $position->getWorld()->getBlock($pos->subtract(0, 1, 0))->isSolid() == false
+                 $position->getWorld()->getBlock($pos)->isSolid() and
+                 !$position->getWorld()->getBlock($pos)->canBeFlowedInto() or
+                 !$position->getWorld()->getBlock($pos->subtract(0, 1, 0))->isSolid()
               ){
                  continue;
               }
@@ -120,7 +119,7 @@ class SpawnerTile extends Spawner{
     protected function readEntitySpawnData(Vector3 $pos) : CompoundTag{
         return CompoundTag::create()
           ->setString("id", $this->entityTypeId)
-          ->setTag("Pos", new ListTag([new DoubleTag($pos->x + 0.5), new DoubleTag($pos->y), new DoubleTag($pos->z + 0.5)]))
+          ->setTag("Pos", new ListTag([new DoubleTag($pos->x + 0.5), new DoubleTag($pos->y + 0.2), new DoubleTag($pos->z + 0.5)]))
           ->setTag("Rotation", new ListTag([new FloatTag(lcg_value() * 360), new FloatTag(0.0)]));
     }
 
