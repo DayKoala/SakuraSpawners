@@ -45,6 +45,8 @@ use pocketmine\item\ToolTier;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\StringToItemParser;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
+use pocketmine\item\ItemIdentifier;
 
 use DayKoala\utils\SpawnerNames;
 
@@ -53,6 +55,8 @@ use DayKoala\entity\SpawnerEntity;
 use DayKoala\block\tile\SpawnerTile;
 
 use DayKoala\block\SpawnerBlock;
+
+use DayKoala\item\SpawnEgg;
 
 use DayKoala\command\SakuraSpawnersCommand;
 
@@ -190,11 +194,21 @@ final class SakuraSpawners extends PluginBase{
 
     private function writeSpawnerItem() : Void{
         SpawnerNames::init($this->getDataFolder());
-        foreach(SpawnerNames::getNames() as $meta => $name){
-           $item = ItemFactory::getInstance()->get(BlockLegacyIds::MONSTER_SPAWNER, $meta = intval($meta))->setCustomName(str_replace("{name}", $name, $this->getDefaultSpawnerName()));
 
-           StringToItemParser::getInstance()->override(str_replace(" ", "_", strtolower(TextFormat::clean($name))) ."_spawner", fn() => $item);
-           StringToItemParser::getInstance()->override(BlockLegacyIds::MONSTER_SPAWNER .":". $meta, fn() => $item);
+        $factory = ItemFactory::getInstance();
+        $parser = StringToItemParser::getInstance();
+
+        foreach(SpawnerNames::getNames() as $meta => $name){
+           $meta = (int) $meta;
+           $clean = TextFormat::clean($name);
+           
+           $factory->register($egg = new SpawnEgg(new ItemIdentifier(ItemIds::SPAWN_EGG, $meta), $clean ." Egg"), true);
+           $parser->override(ItemIds::SPAWN_EGG .":". $meta, fn() => $egg);
+           $parser->override(str_replace(" ", "_", strtolower($clean)) ."_spawn_egg", fn() => $egg);
+
+           $spawner = $factory->get(BlockLegacyIds::MONSTER_SPAWNER, $meta)->setCustomName(str_replace("{name}", $name, $this->getDefaultSpawnerName()));
+           $parser->override(BlockLegacyIds::MONSTER_SPAWNER .":". $meta, fn() => $spawner);
+           $parser->override(str_replace(" ", "_", strtolower($clean)) ."_spawner", fn() => $spawner);
         }
     }
 

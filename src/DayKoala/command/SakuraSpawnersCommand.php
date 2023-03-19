@@ -23,9 +23,14 @@ namespace DayKoala\command;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 
+use pocketmine\plugin\PluginOwned;
+
 use pocketmine\player\Player;
 
 use pocketmine\item\ItemIds;
+use pocketmine\item\StringToItemParser;
+
+use pocketmine\block\BlockLegacyIds;
 
 use DayKoala\utils\SpawnerNames;
 
@@ -33,7 +38,7 @@ use DayKoala\entity\SpawnerEntity;
 
 use DayKoala\SakuraSpawners;
 
-final class SakuraSpawnersCommand extends Command{
+final class SakuraSpawnersCommand extends Command implements PluginOwned{
     
     private const PREFIX = "§l§dSPAWNERS §r§d";
 
@@ -46,6 +51,10 @@ final class SakuraSpawnersCommand extends Command{
             '/spawner'
         );
         $this->setPermission('sakuraspawners.command.spawner');
+    }
+
+    public function getOwningPlugin() : SakuraSpawners{
+        return $this->plugin;
     }
 
     public function execute(CommandSender $sender, String $label, Array $args) : Bool{
@@ -146,6 +155,36 @@ final class SakuraSpawnersCommand extends Command{
                  $this->plugin->setSpawnerSize($id, $height, $width);
                  $sender->sendMessage(self::PREFIX . SpawnerNames::getName($id) ." hitbox set to height: ". $height ." width: ". $width .".");
                  return true;
+              case 'give':
+                 $id = array_shift($args);
+                 if(!is_numeric($id)){
+                    $sender->sendMessage(self::PREFIX ."Invalid id.");
+                    return false;
+                 }
+                 $item = StringToItemParser::getInstance()->parse(BlockLegacyIds::MONSTER_SPAWNER .":". $id);
+                 if($item === null){
+                    $sender->sendMessage(self::PREFIX ."Invalid entity id.");
+                    return false;
+                 }
+                 $player = $sender->getServer()->getPlayerByPrefix(implode(" ", $args)) ?? $sender;
+                 if($player !== $sender){
+                    $player->sendMessage(self::PREFIX ."received.");
+                 }
+                 $player->getInventory()->addItem($item);
+                 $sender->sendMessage(self::PREFIX ."item received successfully.");
+                 return true;
+              case 'list':
+                 $list = SpawnerNames::getNames();
+                 if(empty($list)){
+                    $sender->sendMessage(self::PREFIX ."Invalid entities id.");
+                    return false;
+                 }
+                 $message = self::PREFIX ."Entities: ";
+                 foreach($list as $id => $name){
+                    $message .= "[". $id ."] ". $name .", ";
+                 }
+                 $sender->sendMessage(substr($message, 0, -2));
+                 return true;
               case 'killall':
                  $count = 0;
                  foreach($sender->getWorld()->getEntities() as $entity){
@@ -165,7 +204,10 @@ final class SakuraSpawnersCommand extends Command{
                     self::PREFIX ."/spawner adddrop [id] Add entity drop\n".
                     self::PREFIX ."/spawner removedrop [id] Remove entity drop\n".
                     self::PREFIX ."/spawner xp [id] [amount] Set entity xp drop amount\n".
-                    self::PREFIX ."/spawner size [id] [height] [width] Set entity hitbox size"
+                    self::PREFIX ."/spawner size [id] [height] [width] Set entity hitbox size\n".
+                    self::PREFIX ."/spawner give [entity id] (player) Give a spawner to a player\n".
+                    self::PREFIX ."/spawner list See spawner list\n".
+                    self::PREFIX ."/spawner killall Kill all spawner entities in your world"
                  );
                  return true;
            }

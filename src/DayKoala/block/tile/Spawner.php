@@ -29,6 +29,8 @@ use pocketmine\nbt\tag\IntTag;
 
 use pocketmine\data\bedrock\LegacyEntityIdToStringIdMap;
 
+use DayKoala\block\SpawnerBlock;
+
 abstract class Spawner extends Spawnable{
 
     protected const TAG_LEGACY_ENTITY_TYPE_ID = "EntityId";
@@ -79,8 +81,7 @@ abstract class Spawner extends Spawnable{
 
     public function setEntityId(String $id) : Void{
         $this->legacyEntityTypeId = LegacyEntityIdToStringIdMap::getInstance()->stringToLegacy($this->entityTypeId = $id) ?? 0;
-
-        if($id !== ":") $this->clearSpawnCompoundCache();
+        if(($block = $this->getBlock()) instanceof SpawnerBlock) $block->setEntityId($id);
     }
 
     public function getSpawnDelay() : Int{

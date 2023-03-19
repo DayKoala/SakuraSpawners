@@ -51,6 +51,11 @@ class SpawnerBlock extends MonsterSpawner{
     public function isAffectedBySilkTouch() : Bool{
         return true;
     }
+
+    public function setEntityId(String $id) : Void{
+        $this->legacyEntityId = LegacyEntityIdToStringIdMap::getInstance()->stringToLegacy($this->entityTypeId = $id) ?? 0;
+        $this->position->getWorld()->setBlock($this->position, $this);
+    }
     
     public function place(BlockTransaction $transaction, Item $item, Block $replace, Block $clicked, Int $face, Vector3 $click, ?Player $player = null) : Bool{
         $result = parent::place($transaction, $item, $replace, $clicked, $face, $click, $player);
@@ -78,13 +83,8 @@ class SpawnerBlock extends MonsterSpawner{
     }
 
     public function getSilkTouchDrops(Item $item) : Array{
-        $tile = $this->position->getWorld()->getTile($this->position);
-        if($tile instanceof Spawner){
-           $drop = StringToItemParser::getInstance()->parse(BlockLegacyIds::MONSTER_SPAWNER .":". $tile->getLegacyEntityId()) ?? ItemFactory::getInstance()->get(BlockLegacyIds::MONSTER_SPAWNER, $tile->getLegacyEntityId());
-        }else{
-           $drop = StringToItemParser::getInstance()->parse(BlockLegacyIds::MONSTER_SPAWNER .":". $this->legacyEntityId) ?? ItemFactory::getInstance()->get(BlockLegacyIds::MONSTER_SPAWNER, $this->legacyEntityId);
-        }
-        return [$drop];
+        $meta = ($tile = $this->position->getWorld()->getTile($this->position)) instanceof Spawner ? $tile->getLegacyEntityId() : $this->legacyEntityId;
+        return [StringToItemParser::getInstance()->parse(BlockLegacyIds::MONSTER_SPAWNER .":". $meta) ?? ItemFactory::getInstance()->get(BlockLegacyIds::MONSTER_SPAWNER, $meta)];
     }
 
 }
