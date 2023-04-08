@@ -141,7 +141,7 @@ abstract class Spawner extends Spawnable{
         if($legacyIdTag instanceof IntTag){
            $this->entityTypeId = LegacyEntityIdToStringIdMap::getInstance()->legacyToString($this->legacyEntityTypeId = $legacyIdTag->getValue()) ?? ":";
         }else{
-           $this->legacyEntityTypeId = LegacyEntityIdToStringIdMap::getInstance()->stringToLegacy($this->entityTypeId = $nbt->getString(self::TAG_ENTITY_TYPE_ID, 0)) ?? 0;
+           $this->legacyEntityTypeId = LegacyEntityIdToStringIdMap::getInstance()->stringToLegacy($this->entityTypeId = $nbt->getString(self::TAG_ENTITY_TYPE_ID, "Undefined")) ?? 0;
         }
         $this->spawnDelay = $nbt->getShort(self::TAG_SPAWN_DELAY, self::DEFAULT_MIN_SPAWN_DELAY);
         $this->minSpawnDelay = $nbt->getShort(self::TAG_MIN_SPAWN_DELAY, self::DEFAULT_MIN_SPAWN_DELAY);
