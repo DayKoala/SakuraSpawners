@@ -38,10 +38,14 @@ use pocketmine\world\particle\MobSpawnParticle;
 
 use DayKoala\entity\SpawnerEntity;
 
+use DayKoala\SakuraSpawners;
+
 class SpawnerTile extends Spawner{
 
     public function __construct(World $world, Vector3 $pos){
         parent::__construct($world, $pos);
+
+        $this->spawnRange = SakuraSpawners::getInstance()->getSpawnerStackDistance();
 
         $world->scheduleDelayedBlockUpdate($pos, 1);
     }
@@ -104,8 +108,8 @@ class SpawnerTile extends Spawner{
                  if(!$entity instanceof SpawnerEntity or !$entity->isAlive() or $entity->isFlaggedForDespawn()){
                     continue;
                  }
-                 $maxY = (int) floor($pos->y - $entity->getPosition()->y);
-                 if($this->entityTypeId !== $entity->getModifiedNetworkTypeId() or $this->spawnRange < $maxY){
+                 $minY = (int) floor($pos->y - $entity->getPosition()->y);
+                 if($this->entityTypeId !== $entity->getModifiedNetworkTypeId() or $this->spawnRange < $minY){
                     continue;
                  }
                  $target = $entity;

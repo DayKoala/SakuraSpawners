@@ -141,7 +141,7 @@ abstract class Spawner extends Spawnable{
         if($legacyIdTag instanceof IntTag){
            $this->entityTypeId = LegacyEntityIdToStringIdMap::getInstance()->legacyToString($this->legacyEntityTypeId = $legacyIdTag->getValue()) ?? ":";
         }else{
-           $this->legacyEntityTypeId = LegacyEntityIdToStringIdMap::getInstance()->stringToLegacy($this->entityTypeId = $nbt->getString(self::TAG_ENTITY_TYPE_ID, 0)) ?? 0;
+           $this->legacyEntityTypeId = LegacyEntityIdToStringIdMap::getInstance()->stringToLegacy($this->entityTypeId = $nbt->getString(self::TAG_ENTITY_TYPE_ID, ":")) ?? 0;
         }
         $this->spawnDelay = $nbt->getShort(self::TAG_SPAWN_DELAY, self::DEFAULT_MIN_SPAWN_DELAY);
         $this->minSpawnDelay = $nbt->getShort(self::TAG_MIN_SPAWN_DELAY, self::DEFAULT_MIN_SPAWN_DELAY);
@@ -158,7 +158,7 @@ abstract class Spawner extends Spawnable{
         $nbt->setShort(self::TAG_MAX_SPAWN_DELAY, $this->maxSpawnDelay);
         $nbt->setShort(self::TAG_SPAWN_RANGE, $this->spawnRange);
         $nbt->setShort(self::TAG_SPAWN_ATTEMPTS, $this->spawnAttempts);
-        $nbt->getShort(self::TAG_REQUIRED_PLAYER_RANGE, $this->requiredPlayerRange);
+        $nbt->setShort(self::TAG_REQUIRED_PLAYER_RANGE, $this->requiredPlayerRange);
     }
 
     protected function addAdditionalSpawnData(CompoundTag $nbt) : Void{

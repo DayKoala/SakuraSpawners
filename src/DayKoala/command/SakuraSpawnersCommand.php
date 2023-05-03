@@ -79,6 +79,14 @@ final class SakuraSpawnersCommand extends Command implements PluginOwned{
                  $this->plugin->setDefaultEntityName(implode(" ", $args));
                  $sender->sendMessage(self::PREFIX ."Entity name changed.");
                  return true;
+              case 'distance':
+                 if(!isset($args[0]) or !is_numeric($args[0])){
+                    $sender->sendMessage(self::PREFIX ."Invalid spawner stack range.");
+                    return false;
+                 }
+                 $this->plugin->setSpawnerStackDistance(intval($args[0]));
+                 $sender->sendMessage(self::PREFIX ."Spawner stack range changed to ". $args[0]);
+                 return true;
               case 'drops':
                  if(!isset($args[0]) or !is_numeric($args[0])){
                     $sender->sendMessage(self::PREFIX ."Invalid entity id.");
@@ -200,6 +208,7 @@ final class SakuraSpawnersCommand extends Command implements PluginOwned{
                  $sender->sendMessage(
                     self::PREFIX ."/spawner name [format] Set spawner name\n".
                     self::PREFIX ."/spawner ename [format] Set entity name\n".
+                    self::PREFIX ."/spawner distance [distance] Set spawner stack range distance\n".
                     self::PREFIX ."/spawner drops [id] See entity drops\n".
                     self::PREFIX ."/spawner adddrop [id] Add entity drop\n".
                     self::PREFIX ."/spawner removedrop [id] Remove entity drop\n".

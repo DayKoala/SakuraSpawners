@@ -106,6 +106,13 @@ class SpawnerEntity extends Living{
         return str_replace(array_keys($args), array_values($args), $this->display);
     }
 
+    public function kill() : Void{
+        if($this->stack > 1){
+           for($i = 1; $i < $this->stack; $i++) $this->onDeath();
+        }
+        parent::kill();
+    }
+
     public function attack(EntityDamageEvent $source) : Void{
         if($source->isCancelled()){
            return;

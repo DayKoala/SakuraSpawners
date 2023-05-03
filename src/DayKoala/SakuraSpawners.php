@@ -65,6 +65,8 @@ final class SakuraSpawners extends PluginBase{
     public const TAG_ENTITY_NAME = 'entity.name';
     public const TAG_SPAWNER_NAME = 'spawner.name';
 
+    public const TAG_SPAWNER_STACK_DISTANCE = 'spawner.stack.distance';
+
     public const TAG_SPAWNER_DROPS = 'spawner.drops';
     public const TAG_SPAWNER_XP = 'spawner.xp';
 
@@ -113,7 +115,7 @@ final class SakuraSpawners extends PluginBase{
     }
 
     public function getDefaultEntityName() : String{
-        return isset($this->settings[self::TAG_ENTITY_NAME]) ? $this->settings[self::TAG_ENTITY_NAME] : "{name} x{stack}";
+        return isset($this->settings[self::TAG_ENTITY_NAME]) ? (string) $this->settings[self::TAG_ENTITY_NAME] : "{name} x{stack}";
     }
 
     public function setDefaultEntityName(String $name) : Void{
@@ -121,11 +123,19 @@ final class SakuraSpawners extends PluginBase{
     }
 
     public function getDefaultSpawnerName() : String{
-        return isset($this->settings[self::TAG_SPAWNER_NAME]) ? $this->settings[self::TAG_SPAWNER_NAME] : "{name} Spawner";
+        return isset($this->settings[self::TAG_SPAWNER_NAME]) ? (string) $this->settings[self::TAG_SPAWNER_NAME] : "{name} Spawner";
     }
 
     public function setDefaultSpawnerName(String $name) : Void{
         $this->settings[self::TAG_SPAWNER_NAME] = $name;
+    }
+
+    public function getSpawnerStackDistance() : Int{
+        return isset($this->settings[self::TAG_SPAWNER_STACK_DISTANCE]) ? (int) $this->settings[self::TAG_SPAWNER_STACK_DISTANCE] : 4;
+    }
+
+    public function setSpawnerStackDistance(Int $distance) : Void{
+        $this->settings[self::TAG_SPAWNER_STACK_DISTANCE] = $distance < 0 ? 0 : $distance;
     }
 
     public function hasSpawner(Int $id) : Bool{
@@ -141,7 +151,7 @@ final class SakuraSpawners extends PluginBase{
     }
 
     public function getSpawnerXp(Int $id) : Int{
-        return isset($this->settings[$id], $this->settings[$id][self::TAG_SPAWNER_XP]) ? $this->settings[$id][self::TAG_SPAWNER_XP] : 0;
+        return isset($this->settings[$id], $this->settings[$id][self::TAG_SPAWNER_XP]) ? (int) $this->settings[$id][self::TAG_SPAWNER_XP] : 0;
     }
 
     public function setSpawnerXp(Int $id, Int $amount) : Void{
@@ -220,7 +230,7 @@ final class SakuraSpawners extends PluginBase{
            if(isset($data[self::TAG_SPAWNER_DROPS])){
               foreach($data[self::TAG_SPAWNER_DROPS] as $name => $item) $this->drops[$id][$name] = Item::jsonDeserialize($item);
            }
-           if(isset($data[self::TAG_SPAWNER_HEIGHT], $data[self::TAG_SPAWNER_WIDTH])) $this->size[$id] = new EntitySizeInfo($data[self::TAG_SPAWNER_HEIGHT], $data[self::TAG_SPAWNER_WIDTH]);
+           if(isset($data[self::TAG_SPAWNER_HEIGHT], $data[self::TAG_SPAWNER_WIDTH])) $this->size[$id] = new EntitySizeInfo((float) $data[self::TAG_SPAWNER_HEIGHT], (float) $data[self::TAG_SPAWNER_WIDTH]);
         }
     }
 

@@ -3,6 +3,8 @@
 spawner.name: "§r§l§d{name} §r§dSpawner"
 entity.name: "§r§l§d{name} §r§dx{stack}"
 
+spawner.stack.distance: 20
+
 10:
   spawner.drops:
     Item Feather (288:0)x1:
