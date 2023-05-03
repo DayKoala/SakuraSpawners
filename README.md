@@ -34,6 +34,8 @@
 >
 > - `/spawner ename [format]` Change spawner entity names format, entity names will only be updated on their next spawn, you can use the following keys: `{health} {max-health} {stack} {max-stack} {name}` they will be changed according to their value.
 >
+> - `/spawner distance [amount]` Change spawner stack distance.
+>
 > - `/spawner adddrop [entity id]` Add the item in your hand to the droplist according to the entity id.
 > 
 > - `/spawner removedrop [entity id]` Remove the item in your hand of the droplist according to the entity id.
