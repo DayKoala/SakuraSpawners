@@ -1,3 +1,9 @@
+# These are the names of all recommended entities.
+# They will be defined according to their nomenclature in lower case ex: pig_spawner or pig_egg .
+# Do not use special characters, otherwise you will not be able to use it!
+
+# Entity Legacy Id => Name
+
 10: "Chicken"
 11: "Cow"
 12: "Pig"

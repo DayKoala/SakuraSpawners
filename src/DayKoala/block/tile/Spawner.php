@@ -13,6 +13,7 @@
  * the Free Software Foundation, use according to the license terms.
  * 
  * @author DayKoala
+ * @social https://twitter.com/DayKoala
  * @link https://github.com/DayKoala/SakuraSpawners
  * 
  * 
@@ -75,13 +76,20 @@ abstract class Spawner extends Spawnable{
         return $this->legacyEntityTypeId;
     }
 
+    public function setLegacyEntityId(Int $id) : Void{
+        $this->entityTypeId = LegacyEntityIdToStringIdMap::getInstance()->legacyToString($this->legacyEntityTypeId = $id) ?? ':';
+        if(($block = $this->getBlock()) instanceof SpawnerBlock) $block->setLegacyEntityId($id);
+    }
+
     public function getEntityId() : String{
         return $this->entityTypeId;
     }
 
     public function setEntityId(String $id) : Void{
-        $this->legacyEntityTypeId = LegacyEntityIdToStringIdMap::getInstance()->stringToLegacy($this->entityTypeId = $id) ?? 0;
-        if(($block = $this->getBlock()) instanceof SpawnerBlock) $block->setEntityId($id);
+        $this->legacyEntityTypeId = array_search(
+            $this->entityTypeId = $id, LegacyEntityIdToStringIdMap::getInstance()->getLegacyToStringMap()
+        );
+        if(($block = $this->getBlock()) instanceof SpawnerBlock) $block->setLegacyEntityId($this->legacyEntityTypeId);
     }
 
     public function getSpawnDelay() : Int{
@@ -139,9 +147,9 @@ abstract class Spawner extends Spawnable{
     public function readSaveData(CompoundTag $nbt) : Void{
         $legacyIdTag = $nbt->getTag(self::TAG_LEGACY_ENTITY_TYPE_ID);
         if($legacyIdTag instanceof IntTag){
-           $this->entityTypeId = LegacyEntityIdToStringIdMap::getInstance()->legacyToString($this->legacyEntityTypeId = $legacyIdTag->getValue()) ?? ":";
+           $this->setLegacyEntityId($legacyIdTag->getValue());
         }else{
-           $this->legacyEntityTypeId = LegacyEntityIdToStringIdMap::getInstance()->stringToLegacy($this->entityTypeId = $nbt->getString(self::TAG_ENTITY_TYPE_ID, ":")) ?? 0;
+           $this->setEntityId($nbt->getString(self::TAG_ENTITY_TYPE_ID, ":"));
         }
         $this->spawnDelay = $nbt->getShort(self::TAG_SPAWN_DELAY, self::DEFAULT_MIN_SPAWN_DELAY);
         $this->minSpawnDelay = $nbt->getShort(self::TAG_MIN_SPAWN_DELAY, self::DEFAULT_MIN_SPAWN_DELAY);

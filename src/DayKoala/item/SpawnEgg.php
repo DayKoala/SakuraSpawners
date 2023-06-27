@@ -13,6 +13,7 @@
  * the Free Software Foundation, use according to the license terms.
  * 
  * @author DayKoala
+ * @social https://twitter.com/DayKoala
  * @link https://github.com/DayKoala/SakuraSpawners
  * 
  * 
@@ -48,9 +49,17 @@ use DayKoala\block\tile\Spawner;
 
 class SpawnEgg extends Item{
 
+    protected string $entityTypeId = ':';
+    protected int $legacyEntityId = 0;
+
+    public function setLegacyEntityId(Int $id) : self{
+        $this->entityTypeId = LegacyEntityIdToStringIdMap::getInstance()->legacyToString($this->legacyEntityId = $id) ?? ':';
+        return $this;
+    }
+
     protected function createEntity(Position $pos) : Entity{
         $nbt = CompoundTag::create()
-        ->setString("id", LegacyEntityIdToStringIdMap::getInstance()->legacyToString($this->getMeta()) ?? ":")
+        ->setString("id", $this->entityTypeId)
         ->setTag("Pos", new ListTag([
             new DoubleTag($pos->x + 0.5),
             new DoubleTag($pos->y + 1.2),
@@ -63,24 +72,31 @@ class SpawnEgg extends Item{
         return EntityFactory::getInstance()->createFromData($pos->getWorld(), $nbt) ?? new SpawnerEntity(Helper::parseLocation($nbt, $pos->getWorld()), $nbt);
     }
 
-    public function onInteractBlock(Player $player, Block $replace, Block $clicked, Int $face, Vector3 $click) : ItemUseResult{
+    public function onInteractBlock(Player $player, Block $replace, Block $clicked, Int $face, Vector3 $clickVector, Array &$returnedItems) : ItemUseResult{
         $tile = $player->getWorld()->getTile($clicked->getPosition());
         if($tile instanceof Spawner){
-           if($tile->getLegacyEntityId() === $this->getMeta()){
-              return ItemUseResult::FAIL();
-           }
-           $tile->setEntityId(LegacyEntityIdToStringIdMap::getInstance()->legacyToString($this->getMeta()) ?? ":");
+            if(
+                $tile->getLegacyEntityId() === $this->legacyEntityId or
+                !$player->hasPermission('sakuraspawners.change')
+            ){
+                return ItemUseResult::FAIL();
+            }
+            $tile->setEntityId($this->legacyEntityId);
         }else{
-           $entity = $this->createEntity($clicked->getPosition());
-           $entity->spawnToAll();
+            $entity = $this->createEntity($clicked->getPosition());
+            $entity->spawnToAll();
         }
         $this->pop();
         return ItemUseResult::SUCCESS();
     }
 
     public function onInteractEntity(Player $player, Entity $entity, Vector3 $click) : Bool{
-        if(!$entity instanceof SpawnerEntity or $entity->getModifiedLegacyNetworkTypeId() !== $this->getMeta()){
-           return false;
+        if(
+            !$player->hasPermission('sakuraspawners.stack') or
+            !$entity instanceof SpawnerEntity or 
+            $entity->getLegacyNetworkId() !== $this->legacyEntityId
+        ){
+            return false;
         }
         $entity->addStackSize(1);
         $this->pop();
