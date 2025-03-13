@@ -7,68 +7,68 @@
 </p>
 
 # About
+- **[SakuraSpawners](https://github.com/DayKoala/SakuraSpawners)** is a plugin for **[PocketMine-MP](https://github.com/pmmp/PocketMine-MP)** which adds the Monster Spawner and it's functionalities as in vanilla Minecraf with some extra tweaks and features.
 
-- **[SakuraSpawners](https://github.com/DayKoala/SakuraSpawners)** is a plugin which adds the functionalities of the Monster Spawner block with some different and useful functions, for
-**[PocketMine-MP](https://github.com/pmmp/PocketMine-MP)**.
-
-### Commands
+### Command
 
 | Command | Description | Permission |
 | --- | --- | --- |
-| `/spawner` | SakuraSpawners main command | **sakuraspawners.command.main** |
-| `/hitkill` | Kill all entities together in one hit | **sakuraspawners.command.hitkill** |
+| `/spawner [subcommand] [entity-id]` | Main command. | **sakuraspawners.command.main** |
 
-### Permissions
+- **Subcommands**
+  - `name [name]`: **Changes entity Name.**
+  - `size [height] [width]`: **Changes entity hitbox Height and Width.**
+  - `scale [scale]`: **Changes entity Scale.**
+  - `xp [amount]`: **Changes entity XP Drop Amount when killed.**
+  - `drop`: **Adds or removes item from player's hand as a Drop.**
+  - `get`: **Adds entity Monster Spawner in player's inventory.**
 
-| Permission | Description |
-| --- | --- |
-| **sakuraspawners.stack** | Be able to stack entities with their own egg |
-| **sakuraspawners.change** | Be able to change the entity in a spawner with an egg |
+> Subcommands values are set after `[entity-id]`
 
-## How can I get a Spawner?
+- All changes are updated in the entity upon server restart or when a new one is created and their data saved in **[Entities.yml](https://github.com/DayKoala/SakuraSpawners/blob/main/resources/Entities.yml)** .
 
-At the moment there is only one way in which you can get a spawer, using the `/give` command.
+### Properties
 
-### Example
+- Some usage properties can be changed in **[Properties.yml](https://github.com/DayKoala/SakuraSpawners/blob/main/resources/Properties.yml)** .
 
-| Command | Item ID:META | Result |
-| --- | --- | --- |
-| `/give` | 52:10 | **Chicken Spawner** |
-| `/give` | 52:11 | **Cow Spawner** |
-| `/give` | 52:12 | **Pig Spawner** |
+> They won't change if the server is running
 
-Remembering that the `id of the spawner is 52` and the `id of the desired entity is the meta`.
+# Developers
 
-- If you want to see all available `entity ids` you can see them **[HERE](https://github.com/DayKoala/SakuraSpawners/blob/main/resources/Names.yml)** !
-
-## How can I get a Spawn Egg?
-
-In the same way as the spawner, use:
+- How can i add my own entity to a Monster Spawner ?
 
 ### Example
 
-| Command | Item ID:META | Result |
-| --- | --- | --- |
-| `/give` | 383:10 | **Chicken Egg** |
-| `/give` | 383:11 | **Cow Egg** |
-| `/give` | 383:12 | **Pig Egg** |
+```php
 
-Remembering that the `id of the spawn egg is 383` and the `id of the desired entity is the meta`.
+use DayKoala\entity\GlobalEntitySelector;
 
-# For Developers
-
-**1.** How can I add my own entity to a spawner?
- It is currently not possible to do this with minor changes. You would need to create a `Spawner or SpawnerTile` extension and register it using the `TileFactory`
-
- **2.** How can I get a Monster Spawner or Spawn Egg? Using SakuraSpawnersItems as in the example below:
-
- ```php
-
-use DayKoala\item\SakuraSpawnersItems;
-
-SakuraSpawnersItems::MONSTER_SPAWNER(); # Spawner
-SakuraSpawnersItems::SPAWN_EGG(); # Spawn Egg
+GlobalEntitySelector::getInstance()->register("MyEntityId", MyEntity::class, function(Position $position, string $entityId) : MyEntity{
+  return new MyEntity(...);
+});
 
 ```
 
-- Remembering that the Monster Spawner is returned as a Block if you want it as an item use `Block->asItem();`
+> You also can take a look at **[GlobalEntitySelector](https://github.com/DayKoala/SakuraSpawners/blob/main/DayKoala/entity/GlobalEntitySelector.php)** for guidance
+
+- How can i get the Monster Spawner Block or Item ?
+
+### Example
+
+```php
+
+use DayKoala\item\SpawnerItems;
+use DayKoala\item\SpawnerItemsManager;
+
+// Block
+SpawnerItems::MONSTER_SPAWNER();
+
+// Item
+SpawnerItems::SPAWNER();
+
+// Item with Entity Identifier
+SpawnerItemsManager::writeEntityId(SpawnerItems::SPAWNER(), "entityId");
+
+```
+
+> Also take a loot at **[SpawnerItems](https://github.com/DayKoala/SakuraSpawners/blob/main/DayKoala/item/SpawnerItems.php)** and **[SpawnerItemsManager](https://github.com/DayKoala/SakuraSpawners/blob/main/DayKoala/item/SpawnerItemsManager.php)** in case of doubts

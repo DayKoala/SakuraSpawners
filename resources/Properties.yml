@@ -1,0 +1,6 @@
+SPAWNER.ITEM.NAME.FORMAT: "§r§l§6{name} §r§6Spawner"
+SPAWNER.TITLE.NAME.FORMAT: "§r§l§6x{stack}/{max-stack}"
+SPAWNER.ENTITY.NAME.FORMAT: "§r§l§d{name} §r§dx{stack}/{max-stack}"
+
+ENTITY.MAX.STACK.SIZE: 200
+ENTITY.MIN.STACK.SIZE: 1

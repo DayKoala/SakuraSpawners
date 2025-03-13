@@ -28,175 +28,99 @@ use pocketmine\plugin\PluginOwned;
 
 use pocketmine\player\Player;
 
+use pocketmine\data\bedrock\LegacyEntityIdToStringIdMap;
+
+use pocketmine\item\StringToItemParser;
+
 use DayKoala\SakuraSpawners;
 
-use DayKoala\utils\SpawnerSettings;
+use DayKoala\item\GlobalEntityDropsManager;
 
-use DayKoala\entity\SpawnerEntity;
+use DayKoala\item\SpawnerItems;
+use DayKoala\item\SpawnerItemsManager;
 
 final class SakuraSpawnersCommand extends Command implements PluginOwned{
 
     private const PREFIX = "§l§dSPAWNERS §r§d";
 
-    public function __construct(
-        private SakuraSpawners $plugin
-    ){
-        parent::__construct(
-            'spawner',
-            'main command of SakuraSpawners',
-            '/spawner'
-        );
+    public function __construct(private SakuraSpawners $plugin){
+        parent::__construct('spawner', 'main command of SakuraSpawners', '/spawner');
+
         $this->setPermission('sakuraspawners.command.main');
     }
 
-    public function getOwningPlugin() : SakuraSpawners{ return $this->plugin; }
+    public function getOwningPlugin() : SakuraSpawners{
+        return $this->plugin;
+    }
 
-    public function execute(CommandSender $sender, String $label, Array $args) : Bool{
+    public function execute(CommandSender $sender, string $label, array $args) : bool{
         if($sender instanceof Player){
             if(!$this->testPermission($sender)){
                 return false;
             }
-            switch(strtolower((string) array_shift($args))){
-                case 'spname':
-                    if(!isset($args[0])){
-                        $sender->sendMessage(self::PREFIX ."Invalid spawner name format.");
-                        return false;
-                    }
-                    SakuraSpawners::getSettings()->setDefault(SpawnerSettings::TAG_DEFAULT_SPAWNER_NAME, implode(" ", $args));
-                    $sender->sendMessage(self::PREFIX ."Spawner name changed.");
+            if(count($args) < 2){
+                $sender->sendMessage(self::PREFIX ."Invalid subcommand and entity id");
+                return false;
+            }
+            $subcommand = (string) array_shift($args);
+            $entityId = (string) array_shift($args);
+            if(is_numeric($entityId)){
+                $entityId = LegacyEntityIdToStringIdMap::getInstance()->legacyToString((int) $entityId) ?? ":";
+            }
+            $data = SakuraSpawners::getGlobalEntityData();
+            if(!$data->existsEntity($entityId)){
+                $sender->sendMessage(self::PREFIX ."Invalid entity id");
+                return false;
+            }
+            switch(strtolower($subcommand)){
+                case "name":
+                    $data->setEntityName($entityId, $name = (string) array_shift($args));
+                    $sender->sendMessage(self::PREFIX ."Name ". $name ." set to ". $entityId);
                     return true;
-                case 'egname':
-                    if(!isset($args[0])){
-                        $sender->sendMessage(self::PREFIX ."Invalid egg name format.");
-                        return false;
-                    }
-                    SakuraSpawners::getSettings()->setDefault(SpawnerSettings::TAG_DEFAULT_SPAWNER_EGG_NAME, implode(" ", $args));
-                    $sender->sendMessage(self::PREFIX ."Egg name changed.");
+                case "size":
+                    $data->setEntitySize($entityId, $height = (float) array_shift($args), $width = array_shift($args));
+                    $sender->sendMessage(self::PREFIX ."Height ". $height ." Width ". $width ." set to ". $entityId);
                     return true;
-                case 'ename':
-                    if(!isset($args[0])){
-                        $sender->sendMessage(self::PREFIX ."Invalid entity name format.");
-                        return false;
-                    }
-                    SakuraSpawners::getSettings()->setDefault(SpawnerSettings::TAG_DEFAULT_SPAWNER_ENTITY_NAME, implode(" ", $args));
-                    $sender->sendMessage(self::PREFIX ."Entity name changed.");
+                case "scale":
+                    $data->setEntityScale($entityId, $scale = (float) array_shift($args));
+                    $sender->sendMessage(self::PREFIX ."Scale ". $scale ." set to ". $entityId);
                     return true;
-                case 'sprange':
-                    if(!isset($args[0]) or !is_numeric($args[0])){
-                        $sender->sendMessage(self::PREFIX ."Invalid spawner spawn range.");
-                        return false;
-                    }
-                    SakuraSpawners::getSettings()->setDefault(SpawnerSettings::TAG_DEFAULT_SPAWNER_ENTITY_SPAWN_DISTANCE, (int) $args[0]);
-                    $sender->sendMessage(self::PREFIX ."Spawner spawn range changed to ". $args[0] .".");
+                case "xp":
+                    $data->setEntityXPAmount($entityId, $xp = (int) array_shift($args));
+                    $sender->sendMessage(self::PREFIX ."XP ". $xp ." set to ". $entityId);
                     return true;
-                case 'strange':
-                    if(!isset($args[0]) or !is_numeric($args[0])){
-                        $sender->sendMessage(self::PREFIX ."Invalid spawner stack range.");
-                        return false;
-                    }
-                    SakuraSpawners::getSettings()->setDefault(SpawnerSettings::TAG_DEFAULT_SPAWNER_ENTITY_STACK_DISTANCE, (int) $args[0]);
-                    $sender->sendMessage(self::PREFIX ."Spawner stack range changed to ". $args[0] .".");
-                    return true;
-                case 'drops':
-                    if(!isset($args[0]) or !is_numeric($args[0])){
-                        $sender->sendMessage(self::PREFIX ."Invalid entity id.");
-                        return false;
-                    }
-                    $drops = SakuraSpawners::getSettings()->getEntityDrops((int) $args[0]);
-                    if(empty($drops)){
-                        $sender->sendMessage(self::PREFIX ."Invalid entity drops.");
-                        return false;
-                    }
-                    $message = self::PREFIX . $args[0] ." Drops: ";
-                    foreach($drops as $item){
-                        $message .= $item->getName() .", ";
-                    }
-                    $sender->sendMessage(substr($message, 0, -2));
-                    return true;
-                case 'adrop':
-                    if(!isset($args[0]) or !is_numeric($args[0])){
-                        $sender->sendMessage(self::PREFIX ."Invalid entity id.");
-                        return false;
-                    }
+                case "drop":
                     $item = $sender->getInventory()->getItemInHand();
                     if($item->isNull()){
-                        $sender->sendMessage(self::PREFIX ."Invalid item in hand.");
+                        $sender->sendMessage(self::PREFIX ."This item isnt valid as a drop");
                         return false;
                     }
-                    SakuraSpawners::getSettings()->addEntityDrop((int) $args[0], $item);
-                    $sender->sendMessage(self::PREFIX . $args[0] ." drop ". $item->getName() ." added.");
+                    $name = $item->getVanillaName();
+                    if($data->hasEntityDrop($entityId, $name)){
+                        $data->removeEntityDrop($entityId, $name);
+                        $message = "Item ". $name ." removed from entity ". $entityId;
+                    }else{
+                        $data->addEntityDrop($entityId, $name, $item->getCount());
+                        $message = "Item ". $name ." added to entity ". $entityId;
+                    }
+                    GlobalEntityDropsManager::writeEntityDrops($entityId);
+                    $sender->sendMessage(self::PREFIX . $message);
                     return true;
-                case 'rdrop':
-                    if(!isset($args[0]) or !is_numeric($args[0])){
-                        $sender->sendMessage(self::PREFIX ."Invalid entity id.");
+                case "get":
+                    $item = (StringToItemParser::getInstance()->parse("52:". $entityId) ?? SpawnerItemsManager::writeEntityId(SpawnerItems::SPAWNER(), $entityId))->setCount(64);
+                    if(!$sender->getInventory()->canAddItem($item)){
+                        $sender->sendMessage(self::PREFIX ."Inventory full");
                         return false;
                     }
-                    $item = $sender->getInventory()->getItemInHand();
-                    if(!SakuraSpawners::getSettings()->hasEntityDrop((int) $args[0], $item)){
-                        $sender->sendMessage(self::PREFIX ."Invalid item in hand.");
-                        return false;
-                    }
-                    SakuraSpawners::getSettings()->removeEntityDrop((int) $args[0], $item);
-                    $sender->sendMessage(self::PREFIX . $args[0] ." drop ". $item->getName() ." removed.");
-                    return true;
-                case 'size':
-                    $id = array_shift($args);
-                    $height = array_shift($args);
-                    $width = array_shift($args);
-                    if(
-                        !is_numeric($id) or
-                        !is_numeric($height) or
-                        !is_numeric($width)
-                    ){
-                        $sender->sendMessage(self::PREFIX ."Invalid entity id, height or width.");
-                        return false;
-                    }
-                    SakuraSpawners::getSettings()->setEntitySize((int) $id, (float) $height, (float) $width);
-                    $sender->sendMessage(self::PREFIX . $id ." hitbox set to height: ". $height ." width: ". $width .".");
-                    return true;
-                case 'xp':
-                    $id = array_shift($args);
-                    $xp = array_shift($args);
-                    if(
-                        !is_numeric($id) or
-                        !is_numeric($xp)
-                    ){
-                        $sender->sendMessage(self::PREFIX ."Invalid entity id or xp amount.");
-                        return false;
-                    }
-                    SakuraSpawners::getSettings()->setEntityXp((int) $id, (int) $xp);
-                    $sender->sendMessage(self::PREFIX . $id ." xp drop amount set to ". $xp .".");
-                    return true;
-                case 'killall':
-                    $count = 0;
-                    foreach($sender->getWorld()->getEntities() as $entity){
-                        if(!$entity instanceof SpawnerEntity){
-                            continue;
-                        }
-                        $entity->close();
-                        $count++;
-                    }
-                    $sender->sendMessage(self::PREFIX . $count ." closed.");
-                    return true;
-                default:
-                    $sender->sendMessage(
-                       self::PREFIX ."/spawner spname [format] Set spawner name\n".
-                       self::PREFIX ."/spawner egname [format] Set egg name\n".
-                       self::PREFIX ."/spawner ename [format] Set entity name\n".
-                       self::PREFIX ."/spawner sprange [range] Set spawner spawn range\n".
-                       self::PREFIX ."/spawner strange [range] Set spawner stack range\n".
-                       self::PREFIX ."/spawner drops [id] See entity drops\n".
-                       self::PREFIX ."/spawner adrop [id] Add entity drop\n".
-                       self::PREFIX ."/spawner rdrop [id] Remove entity drop\n".
-                       self::PREFIX ."/spawner size [id] [height] [width] Set entity hitbox size\n".
-                       self::PREFIX ."/spawner xp [id] [amount] Set entity xp drop amount\n".
-                       self::PREFIX ."/spawner killall Kill all spawner entities in your world"
-                    );
+                    $sender->getInventory()->addItem($item);
+                    $sender->sendMessage(self::PREFIX ."Added ". $entityId ." x64 spawners on your inventory");
                     return true;
             }
+            $sender->sendMessage(self::PREFIX ."/spawner [name/size/scale/xp/drop/get] [entity-id] (value...)");
+            return true;
         }
-        $sender->sendMessage(self::PREFIX ."In game only.");
-        return false;
+        $sender->sendMessage(self::PREFIX ."Command valid only in game");
+        return true;
     }
 
 }

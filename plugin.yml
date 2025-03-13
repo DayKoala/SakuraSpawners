@@ -1,14 +1,8 @@
 name: SakuraSpawners
 main: DayKoala\SakuraSpawners
 api: 5.0.0
-version: 2.0.0
+version: 3.0.0
 author: DayKoala
 permissions:
   sakuraspawners.command.main:
-    default: op
-  sakuraspawners.command.hitkill:
-    default: op
-  sakuraspawners.stack:
-    default: op
-  sakuraspawners.change:
     default: op

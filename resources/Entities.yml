@@ -1,0 +1,1031 @@
+---
+minecraft:chicken:
+  entity.name: Chicken
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:cow:
+  entity.name: Cow
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:pig:
+  entity.name: Pig
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:sheep:
+  entity.name: Sheep
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:wolf:
+  entity.name: Wolf
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:villager:
+  entity.name: Villager
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:mooshroom:
+  entity.name: Mooshroom
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:squid:
+  entity.name: Squid
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:rabbit:
+  entity.name: Rabbit
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:bat:
+  entity.name: Bat
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:iron_golem:
+  entity.name: Iron golem
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:snow_golem:
+  entity.name: Snow golem
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:ocelot:
+  entity.name: Ocelot
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:horse:
+  entity.name: Horse
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:donkey:
+  entity.name: Donkey
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:mule:
+  entity.name: Mule
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:skeleton_horse:
+  entity.name: Skeleton horse
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:zombie_horse:
+  entity.name: Zombie horse
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:polar_bear:
+  entity.name: Polar bear
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:llama:
+  entity.name: Llama
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:parrot:
+  entity.name: Parrot
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:dolphin:
+  entity.name: Dolphin
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:zombie:
+  entity.name: Zombie
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:creeper:
+  entity.name: Creeper
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:skeleton:
+  entity.name: Skeleton
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:spider:
+  entity.name: Spider
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:zombie_pigman:
+  entity.name: Zombie pigman
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:slime:
+  entity.name: Slime
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:enderman:
+  entity.name: Enderman
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:silverfish:
+  entity.name: Silverfish
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:cave_spider:
+  entity.name: Cave spider
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:ghast:
+  entity.name: Ghast
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:magma_cube:
+  entity.name: Magma cube
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:blaze:
+  entity.name: Blaze
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:zombie_villager:
+  entity.name: Zombie villager
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:witch:
+  entity.name: Witch
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:stray:
+  entity.name: Stray
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:husk:
+  entity.name: Husk
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:wither_skeleton:
+  entity.name: Wither skeleton
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:guardian:
+  entity.name: Guardian
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:elder_guardian:
+  entity.name: Elder guardian
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:npc:
+  entity.name: Npc
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:wither:
+  entity.name: Wither
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:ender_dragon:
+  entity.name: Ender dragon
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:shulker:
+  entity.name: Shulker
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:endermite:
+  entity.name: Endermite
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:agent:
+  entity.name: Agent
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:vindicator:
+  entity.name: Vindicator
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:phantom:
+  entity.name: Phantom
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:ravager:
+  entity.name: Ravager
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:armor_stand:
+  entity.name: Armor stand
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:tripod_camera:
+  entity.name: Tripod camera
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:item:
+  entity.name: Item
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:tnt:
+  entity.name: Tnt
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:falling_block:
+  entity.name: Falling block
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:xp_bottle:
+  entity.name: Xp bottle
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:xp_orb:
+  entity.name: Xp orb
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:eye_of_ender_signal:
+  entity.name: Eye of ender signal
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:ender_crystal:
+  entity.name: Ender crystal
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:fireworks_rocket:
+  entity.name: Fireworks rocket
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:thrown_trident:
+  entity.name: Thrown trident
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:turtle:
+  entity.name: Turtle
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:cat:
+  entity.name: Cat
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:shulker_bullet:
+  entity.name: Shulker bullet
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:fishing_hook:
+  entity.name: Fishing hook
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:dragon_fireball:
+  entity.name: Dragon fireball
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:arrow:
+  entity.name: Arrow
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:snowball:
+  entity.name: Snowball
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:egg:
+  entity.name: Egg
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:painting:
+  entity.name: Painting
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:minecart:
+  entity.name: Minecart
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:fireball:
+  entity.name: Fireball
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:splash_potion:
+  entity.name: Splash potion
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:ender_pearl:
+  entity.name: Ender pearl
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:leash_knot:
+  entity.name: Leash knot
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:wither_skull:
+  entity.name: Wither skull
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:boat:
+  entity.name: Boat
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:wither_skull_dangerous:
+  entity.name: Wither skull dangerous
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:lightning_bolt:
+  entity.name: Lightning bolt
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:small_fireball:
+  entity.name: Small fireball
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:area_effect_cloud:
+  entity.name: Area effect cloud
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:hopper_minecart:
+  entity.name: Hopper minecart
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:tnt_minecart:
+  entity.name: Tnt minecart
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:chest_minecart:
+  entity.name: Chest minecart
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:command_block_minecart:
+  entity.name: Command block minecart
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:lingering_potion:
+  entity.name: Lingering potion
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:llama_spit:
+  entity.name: Llama spit
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:evocation_fang:
+  entity.name: Evocation fang
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:evocation_illager:
+  entity.name: Evocation illager
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:vex:
+  entity.name: Vex
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:ice_bomb:
+  entity.name: Ice bomb
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:balloon:
+  entity.name: Balloon
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:pufferfish:
+  entity.name: Pufferfish
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:salmon:
+  entity.name: Salmon
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:drowned:
+  entity.name: Drowned
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:tropicalfish:
+  entity.name: Tropicalfish
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:cod:
+  entity.name: Cod
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:panda:
+  entity.name: Panda
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:pillager:
+  entity.name: Pillager
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:villager_v2:
+  entity.name: Villager v2
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:zombie_villager_v2:
+  entity.name: Zombie villager v2
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:wandering_trader:
+  entity.name: Wandering trader
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:elder_guardian_ghost:
+  entity.name: Elder guardian ghost
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:fox:
+  entity.name: Fox
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:bee:
+  entity.name: Bee
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:piglin:
+  entity.name: Piglin
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:hoglin:
+  entity.name: Hoglin
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:strider:
+  entity.name: Strider
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:zoglin:
+  entity.name: Zoglin
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:piglin_brute:
+  entity.name: Piglin brute
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:goat:
+  entity.name: Goat
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:glow_squid:
+  entity.name: Glow squid
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:axolotl:
+  entity.name: Axolotl
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:warden:
+  entity.name: Warden
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:frog:
+  entity.name: Frog
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:tadpole:
+  entity.name: Tadpole
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:allay:
+  entity.name: Allay
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:camel:
+  entity.name: Camel
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:sniffer:
+  entity.name: Sniffer
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:breeze:
+  entity.name: Breeze
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:breeze_wind_charge_projectile:
+  entity.name: Breeze wind charge projectile
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:armadillo:
+  entity.name: Armadillo
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:wind_charge_projectile:
+  entity.name: Wind charge projectile
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:bogged:
+  entity.name: Bogged
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:ominous_item_spawner:
+  entity.name: Ominous item spawner
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:creaking:
+  entity.name: Creaking
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:trader_llama:
+  entity.name: Trader llama
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:chest_boat:
+  entity.name: Chest boat
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+minecraft:player:
+  entity.name: Player
+  entity.size:
+  - 1
+  - 1
+  entity.scale: 1
+  entity.xp: 2
+  entity.drops: []
+...

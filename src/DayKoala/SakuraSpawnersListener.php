@@ -23,107 +23,93 @@ namespace DayKoala;
 
 use pocketmine\event\Listener;
 
-use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\player\PlayerInteractEvent;
 
-use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\block\BlockPlaceEvent;
 
-use pocketmine\event\player\PlayerQuitEvent;
-
-use pocketmine\player\Player;
-
-use pocketmine\item\ItemBlock;
 use pocketmine\item\Pickaxe;
 use pocketmine\item\StringToItemParser;
-
-use pocketmine\block\MonsterSpawner;
+use pocketmine\item\ItemBlock;
 
 use pocketmine\item\enchantment\VanillaEnchantments;
 
-use DayKoala\entity\SpawnerEntity;
+use pocketmine\block\MonsterSpawner;
+
+use DayKoala\block\tile\StackableSpawner;
+use DayKoala\block\tile\Spawner;
+
+use DayKoala\entity\GlobalEntitySelector;
+
+use DayKoala\item\SpawnerItems;
+use DayKoala\item\SpawnerItemsManager;
 
 use DayKoala\block\SpawnerBlock;
 
-use DayKoala\block\tile\Spawner;
-
-use DayKoala\item\SakuraSpawnersItems;
-
 final class SakuraSpawnersListener implements Listener{
 
-    private static array $hitkill = [];
-
-    public static function hasKiller(Player|String $player) : Bool{
-        return isset(self::$hitkill[$player instanceof Player ? $player->getName() : $player]);
-    }
-
-    public static function addKiller(Player $player) : Void{
-        self::$hitkill[$player->getName()] = $player;
-    }
-
-    public static function removeKiller(Player|String $player) : Void{
-        if(isset(self::$hitkill[($player = $player instanceof Player ? $player->getName() : $player)])) unset(self::$hitkill[$player]);
-    }
-
-    public function onDamage(EntityDamageEvent $event){
+    public function onInteract(PlayerInteractEvent $event) : void{
         if(
             $event->isCancelled() or
-            !$event instanceof EntityDamageByEntityEvent
+            $event->getAction() !== PlayerInteractEvent::RIGHT_CLICK_BLOCK
         ){
             return;
         }
-        $entity = $event->getEntity();
-        $damager = $event->getDamager();
+        $item = $event->getItem();
+        $position = $event->getBlock()->getPosition();
+        $tile = $position->getWorld()->getTile($position);
         if(
-            !$entity instanceof SpawnerEntity or 
-            !$damager instanceof Player
+            !$tile instanceof StackableSpawner or
+            $tile->hasMaxStackSize() or
+            $tile->getEntityId() !== $item->getNamedTag()->getString(GlobalEntitySelector::TAG_ENTITY_ID, ":")
         ){
             return;
         }
-        if(self::hasKiller($damager)) $entity->kill();
+        $item->pop();
+        $tile->addStackSize(1);
+        $event->getPlayer()->getInventory()->setItemInHand($item);
+        $event->cancel();
     }
 
-    public function onPlace(BlockPlaceEvent $event){
+    public function onBreak(BlockBreakEvent $event) : void{
         if($event->isCancelled()){
             return;
         }
         $item = $event->getItem();
-        if(!$item instanceof ItemBlock){
-            return;
-        }
-        $block = $item->getBlock();
+        $position = $event->getBlock()->getPosition();
+        $tile = $position->getWorld()->getTile($position);
         if(
-            !$block instanceof MonsterSpawner or
-            $block instanceof SpawnerBlock
-        ){
-            return;
-        }
-        $transaction = $event->getTransaction();
-
-        foreach($transaction->getBlocks() as [$x, $y, $z, $blocks]){
-            $transaction->addBlock($blocks->getPosition(), SakuraSpawnersItems::MONSTER_SPAWNER()->setLegacyEntityId(SakuraSpawnersItems::getSpawnerEntityId($item)));
-        }
-
-    }
-
-    public function onBreak(BlockBreakEvent $event){
-        if($event->isCancelled()){
-            return;
-        }
-        $item = $event->getItem();
-        $tile = ($position = $event->getBlock()->getPosition())->getWorld()->getTile($position);
-        if(
-            !$tile instanceof Spawner or
-            !$item instanceof Pickaxe or
+            !$tile instanceof Spawner or 
+            !$item instanceof Pickaxe or 
             !$item->hasEnchantment(VanillaEnchantments::SILK_TOUCH())
         ){
             return;
         }
-        $event->setDrops([StringToItemParser::getInstance()->parse('52:'. $tile->getLegacyEntityId()) ?? SakuraSpawnersItems::MONSTER_SPAWNER()->asItem()]);
+        $drops = StringToItemParser::getInstance()->parse("52:". $tile->getEntityId()) ?? SpawnerItemsManager::writeEntityId(SpawnerItems::SPAWNER(), $tile->getEntityId());
+        $event->setDrops([$tile instanceof StackableSpawner ? $drops->setCount($tile->getStackSize()) : $drops]);
     }
 
-    public function onQuit(PlayerQuitEvent $event){
-        if(self::hasKiller($player = $event->getPlayer())) self::removeKiller($player);
+    public function onPlace(BlockPlaceEvent $event) : void{
+        if($event->isCancelled()){
+            return;
+        }
+        $item = $event->getItem();
+        $block = $item?->getBlock();
+        if(
+            !$item instanceof ItemBlock or 
+            !$block instanceof MonsterSpawner or 
+            $block instanceof SpawnerBlock
+        ){
+            return;
+        }
+        $entityId = $item->getNamedTag()->getString(GlobalEntitySelector::TAG_ENTITY_ID, ":");
+        $transaction = $event->getTransaction();
+        foreach($transaction->getBlocks() as [$x, $y, $z, $blockTarget]){
+            if(!$blockTarget instanceof MonsterSpawner){
+                continue;
+            }
+            $transaction->addBlock($blockTarget->getPosition(), SpawnerItems::MONSTER_SPAWNER()->setEntityId($entityId));
+        }
     }
 
 }

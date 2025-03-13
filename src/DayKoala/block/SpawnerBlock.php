@@ -27,78 +27,60 @@ use pocketmine\block\Block;
 use pocketmine\world\BlockTransaction;
 
 use pocketmine\item\Item;
-use pocketmine\item\StringToItemParser;
 
 use pocketmine\math\Vector3;
 
 use pocketmine\player\Player;
 
-use pocketmine\data\bedrock\LegacyEntityIdToStringIdMap;
+use DayKoala\entity\GlobalEntitySelector;
 
 use DayKoala\block\tile\Spawner;
 
-use DayKoala\item\SakuraSpawnersItems;
-
 class SpawnerBlock extends MonsterSpawner{
 
-    protected string $entityTypeId = ':';
-    protected int $legacyEntityId = 0;
+    protected string $entityId = ":";
 
-    public function getMaxStackSize() : Int{ return 64; }
-
-    public function isAffectedBySilkTouch() : Bool{ return true; }
-
-    public function place(BlockTransaction $tx, Item $item, Block $replace, Block $clicked, Int $face, Vector3 $click, ?Player $player = null) : Bool{
-        $this->setLegacyEntityId(SakuraSpawnersItems::getSpawnerEntityId($item));
-        return parent::place($tx, $item, $replace, $clicked, $face, $click, $player);
+    public function getMaxStackSize() : int{
+        return 64;
     }
 
-    public function setLegacyEntityId(Int $id) : self{
-        $this->entityTypeId = LegacyEntityIdToStringIdMap::getInstance()->legacyToString($this->legacyEntityId = $id) ?? ':';
+    public function isAffectedBySilkTouch() : bool{
+        return true;
+    }
+
+    public function getEntityId() : string{
+        return $this->entityId;
+    }
+
+    public function setEntityId(string $entityId) : self{
+        $this->entityId = $entityId;
         return $this;
     }
 
-    public function getLegacyEntityId() : Int{
-        return $this->legacyEntityId;
+    public function place(BlockTransaction $tx, Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
+        $this->entityId = $item->getNamedTag()->getString(GlobalEntitySelector::TAG_ENTITY_ID, ":");
+        return parent::place($tx, $item, $blockReplace, $blockClicked, $face, $clickVector, $player);
     }
 
-    public function onScheduledUpdate() : Void{
-        $tile = $this->position->getWorld()->getTile($this->position);
-        if(
-            $tile instanceof Spawner and
-            $tile->onUpdate()
-        ) $this->position->getWorld()->scheduleDelayedBlockUpdate($this->position, 1);
-    }
-
-    public function readStateFromWorld() : Block{
+    public function readStateFromWorld() : self{
         parent::readStateFromWorld();
 
         $tile = $this->position->getWorld()->getTile($this->position);
 
-        if(
-            $tile instanceof Spawner and 
-            $tile->getEntityId() !== ':'
-        ){
-            $this->entityTypeId = $tile->getEntityId();
-            $this->legacyEntityId = $tile->getLegacyEntityId();
+        if($tile instanceof Spawner){
+            if($tile->getEntityId() !== ":") $this->entityId = $tile->getEntityId();
         }
-
         return $this;
     }
 
-    public function writeStateToWorld() : Void{
+    public function writeStateToWorld() : void{
         parent::writeStateToWorld();
 
         $tile = $this->position->getWorld()->getTile($this->position);
 
         assert($tile instanceof Spawner);
 
-        if($tile->getEntityId() == ':') $tile->setLegacyEntityId($this->legacyEntityId);
-    }
-
-    public function getSilkTouchDrops(Item $item) : Array{
-        $id = ($tile = $this->position->getWorld()->getTile($this->position)) instanceof Spawner ? $tile->getLegacyEntityId() : $this->legacyEntityId;
-        return [StringToItemParser::getInstance()->parse('52:'. $id) ?? SakuraSpawnersItems::MONSTER_SPAWNER()];
+        if($tile->getEntityId() === ":") $tile->setEntityId($this->entityId); 
     }
 
 }
