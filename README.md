@@ -49,7 +49,7 @@ GlobalEntitySelector::getInstance()->register("MyEntityId", MyEntity::class, fun
 
 ```
 
-> You also can take a look at **[GlobalEntitySelector](https://github.com/DayKoala/SakuraSpawners/blob/main/DayKoala/entity/GlobalEntitySelector.php)** for guidance
+> You also can take a look at **[GlobalEntitySelector](https://github.com/DayKoala/SakuraSpawners/blob/main/src/DayKoala/entity/GlobalEntitySelector.php)** for guidance
 
 - How can i get the Monster Spawner Block or Item ?
 
@@ -71,4 +71,4 @@ SpawnerItemsManager::writeEntityId(SpawnerItems::SPAWNER(), "entityId");
 
 ```
 
-> Also take a loot at **[SpawnerItems](https://github.com/DayKoala/SakuraSpawners/blob/main/DayKoala/item/SpawnerItems.php)** and **[SpawnerItemsManager](https://github.com/DayKoala/SakuraSpawners/blob/main/DayKoala/item/SpawnerItemsManager.php)** in case of doubts
+> Also take a loot at **[SpawnerItems](https://github.com/DayKoala/SakuraSpawners/blob/main/src/DayKoala/item/SpawnerItems.php)** and **[SpawnerItemsManager](https://github.com/DayKoala/SakuraSpawners/blob/main/src/DayKoala/item/SpawnerItemsManager.php)** in case of doubts
