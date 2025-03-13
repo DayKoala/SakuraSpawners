@@ -7,13 +7,13 @@
 </p>
 
 # About
-- **[SakuraSpawners](https://github.com/DayKoala/SakuraSpawners)** is a plugin for **[PocketMine-MP](https://github.com/pmmp/PocketMine-MP)** which adds the Monster Spawner and it's functionalities as in vanilla Minecraf with some extra tweaks and features.
+- **[SakuraSpawners](https://github.com/DayKoala/SakuraSpawners)** is a plugin for **[PocketMine-MP](https://github.com/pmmp/PocketMine-MP)** which adds the Monster Spawner and it's functionalities as in vanilla Minecraft with some extra tweaks and features.
 
 ### Command
 
 | Command | Description | Permission |
 | --- | --- | --- |
-| `/spawner [subcommand] [entity-id]` | Main command. | **sakuraspawners.command.main** |
+| `/spawner [subcommand] [entity-id]` | Main command | **sakuraspawners.command.main** |
 
 - **Subcommands**
   - `name [name]`: **Changes entity Name.**
